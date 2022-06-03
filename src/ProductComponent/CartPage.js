@@ -88,7 +88,7 @@ function CartScreen(props) {
     setProdId(location.state.prodId)
 
     
-    loadUser();
+    //loadUser();
     loadRecords();
     
 

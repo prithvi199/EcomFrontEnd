@@ -89,7 +89,7 @@ function OrderHistory(props) {
     //setProdId(location.state.prodId)
 
     
-    loadUser();
+    //loadUser();
     loadRecords();
     
 
