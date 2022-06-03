@@ -58,7 +58,7 @@ function UserOrderHistory(props) {
 
   }
 
-  const loadUser = () => {
+  const loadUser = async() => {
 
     function parseJwt(token) {
       if (!token) { return; }

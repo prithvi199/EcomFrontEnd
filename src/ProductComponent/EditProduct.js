@@ -45,7 +45,7 @@ function EditProduct(){
           const data = await UserService.getAdmin(parseJwt(localStorage.getItem('Recruiter'), { decrypt: true}).iss)
             .then((response) => {
               console.log(response.data)
-              setUser(response.data);
+              setAdmin(response.data);
               //setProductId(response.data.email)
               
             })

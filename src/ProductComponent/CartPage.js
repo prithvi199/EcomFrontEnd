@@ -53,7 +53,7 @@ function CartScreen(props) {
 
   }
 
-  const loadUser = ()=>{
+  const loadUser = async()=>{
 
 
 function parseJwt(token) {
