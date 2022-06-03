@@ -72,7 +72,7 @@ function UserOrderHistory(props) {
       const data = await UserService.get(parseJwt(localStorage.getItem('Recruiter'), { decrypt: true}).iss)
         .then((response) => {
           console.log(response.data)
-          setUser(response.data);
+          setuserName(response.data.name);
           //setProductId(response.data.email)
           
         })
