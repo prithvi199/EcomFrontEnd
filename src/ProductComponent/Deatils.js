@@ -10,10 +10,10 @@ function Details(){
 
 
     var i =1;
-    const loadRecords = async () => {
+    
 
 
-
+       const loadRecords= async()=>{
 
         const data = await ProductService.getAll()
           .then((response) => {

@@ -8,6 +8,11 @@ class UserService {
   get(id) {
     return http.get(`/User/${id}`);
   }
+
+  getAdmin(id) {
+    return http.get(`/admin/${id}`);
+  }
+  
   
   create(user) {
     return http.post("/User", user);

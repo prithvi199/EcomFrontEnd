@@ -38,7 +38,8 @@ function Login() {
                 setLoginFailure(false)
            
                 if (response.data[0] == "User" ) {
-                    setCookie(response.data[0], response.data[2]);
+                    // setCookie(response.data[0], response.data[2]);
+                    localStorage.setItem(response.data[0],response.data[2],{encrypt:true});
                     history('/viewdetail', { state: { email: login.email } })
                     
                 }
@@ -47,7 +48,8 @@ function Login() {
                 //     setCookie(response.data[0], response.data[2]);
                 
                 else if (response.data[0] == "Admin" ) {
-                    setCookie(response.data[0], response.data[2]);
+                    // setCookie(response.data[0], response.data[2]);
+                    localStorage.setItem(response.data[0],response.data[2],{encrypt:true});
                     history('/add-product', { state: { email: login.email } })
                 }
                 

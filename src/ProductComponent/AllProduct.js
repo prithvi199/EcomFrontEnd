@@ -13,6 +13,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import OrderHistory from "./OrderHistory";
+import UserService from "../Services/UserService";
 
 
 
@@ -69,20 +70,31 @@ function AllProduct(props) {
   }
 
   const loadUser = async () => {
+    function parseJwt(token) {
+      if (!token) { return; }
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace('-', '+').replace('_', '/');
+      return JSON.parse(window.atob(base64));
+  }
+    
+    try{
 
-    const data = await LoginService.getUser()
-      .then((response) => {
-        console.log(response.data)
-        setUser(response.data);
-        //setProductId(response.data.email)
-        
-      })
-      .catch((error) => {
-        setShow(true);
-        setErrorMsg(error.response.data);
+      const data = await UserService.get(parseJwt(localStorage.getItem('Recruiter'), { decrypt: true}).iss)
+        .then((response) => {
+          console.log(response.data)
+          setUser(response.data);
+          //setProductId(response.data.email)
+          
+        })
+        .catch((error) => {
+          setShow(true);
+          setErrorMsg(error.response.data);
+  
+        });
+      } catch{
+      navigate("/login");
 
-        navigate("/login");
-      });
+    }
     return () => { };
 
   }
@@ -221,7 +233,7 @@ function AllProduct(props) {
     
     //alert(JSON.stringify(logoutDTO))
     LoginService.logout(logoutDTO).then((response) => {
-      removeCookie(logoutDTO.type);
+      // removeCookie(logoutDTO.type);
       localStorage.removeItem("token");
       
       navigate("/");

@@ -3,6 +3,7 @@ import { Link,useNavigate } from 'react-router-dom'
 import { useCookies } from "react-cookie";
 import ProductService from "../Services/ProductService";
 import LoginService from "../Services/LoginService";
+import UserService from "../Services/UserService";
 
 
 
@@ -32,19 +33,31 @@ function EditProduct(){
 
       const loadAdmin = async () => {
 
-        const data = await LoginService.getAdmin()
-          .then((response) => {
-            console.log(response.data)
-            setAdmin(response.data);
-            setAdminEmail(response.data.email)
-            
-          })
-          .catch((error) => {
-            setShow(true);
-            setErrorMsg(error.response.data);
+        function parseJwt(token) {
+          if (!token) { return; }
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace('-', '+').replace('_', '/');
+          return JSON.parse(window.atob(base64));
+      }
+        
+        try{
     
-            navigate("/login");
-          });
+          const data = await UserService.getAdmin(parseJwt(localStorage.getItem('Recruiter'), { decrypt: true}).iss)
+            .then((response) => {
+              console.log(response.data)
+              setUser(response.data);
+              //setProductId(response.data.email)
+              
+            })
+            .catch((error) => {
+              setShow(true);
+              setErrorMsg(error.response.data);
+      
+            });
+          } catch{
+          navigate("/login");
+    
+        }
         return () => { };
     
       }
@@ -76,7 +89,7 @@ function EditProduct(){
       }
       LoginService.logout(logoutDTO)
         .then((response) => {
-          removeCookie(logoutDTO.type)
+          //removeCookie(logoutDTO.type)
           localStorage.removeItem("token");
           navigate('/')
         })

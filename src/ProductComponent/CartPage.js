@@ -8,6 +8,7 @@ import UserCartService from '../Services/UserCartService';
 import LoginService from '../Services/LoginService';
 import { useCookies } from "react-cookie";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import UserService from "../Services/UserService";
 
 function CartScreen(props) {
   const location = useLocation();
@@ -54,20 +55,32 @@ function CartScreen(props) {
 
   const loadUser = ()=>{
 
-    const data =  LoginService.getUser()
-    .then((response) => {
-      console.log(response.data)
-      setuserEmail( response.data.email);
-      //alert(JSON.stringify(userEmail))
 
-    })
-    .catch((error) => {
-      setShow(true);
-      setErrorMsg(error.response.data);
+function parseJwt(token) {
+      if (!token) { return; }
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace('-', '+').replace('_', '/');
+      return JSON.parse(window.atob(base64));
+  }
+    
+    try{
 
-      
-    });
-   
+      const data = await UserService.get(parseJwt(localStorage.getItem('Recruiter'), { decrypt: true}).iss)
+        .then((response) => {
+          console.log(response.data)
+          setUser(response.data);
+          //setProductId(response.data.email)
+          
+        })
+        .catch((error) => {
+          setShow(true);
+          setErrorMsg(error.response.data);
+  
+        });
+      } catch{
+      navigate("/login");
+
+    }
 
   }
 
